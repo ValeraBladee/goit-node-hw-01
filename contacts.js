@@ -2,17 +2,14 @@ const { randomUUID } = require("node:crypto");
 
 const fs = require("node:fs/promises");
 const path = require("node:path");
-const contactsDataPath = path.join(__dirname, "./", "db/", "contacts.json");
+const contactsDataPath = path.join(__dirname, "db/", "contacts.json");
 
 console.log("\nPROGRAM START\n");
 
 const listContacts = async () => {
   try {
-    console.log("try: read file");
-
     // get json contacts
     const data = await fs.readFile(contactsDataPath, { encoding: "utf-8" });
-    console.log("success: read file");
 
     // return parsed contacts
     return JSON.parse(data);
@@ -23,14 +20,11 @@ const listContacts = async () => {
 
 const writeContacts = async (contacts) => {
   try {
-    console.log("try: write file");
-
     // JSON.stringify data and write to contacts.json
     await fs.writeFile(
       contactsDataPath,
       JSON.stringify(contacts, undefined, 2)
     );
-    console.log("success: write file");
   } catch (error) {
     console.error("error:", error.message);
   }
@@ -55,7 +49,6 @@ const getContactById = async (contactId) => {
 
 const removeContact = async (contactId) => {
   try {
-    console.log("try: remove contact");
     // get contacts list
     const contactsData = await listContacts();
 
@@ -77,8 +70,6 @@ const removeContact = async (contactId) => {
     // write new array to contacts.json
     await writeContacts(newContactsData);
 
-    console.log("success: remove contact");
-
     return contactsData[removeIndex];
   } catch (error) {
     console.error("error:", error.message);
@@ -92,8 +83,6 @@ const addContact = async ({ name = "", email = "", phone = "" }) => {
     );
 
   try {
-    console.log("try: add contact");
-
     name = name.trim();
     email = email.trim();
     phone = phone.trim();
@@ -132,11 +121,8 @@ const addContact = async ({ name = "", email = "", phone = "" }) => {
 
 const updateContactsId = async () => {
   try {
-    console.log("try: update contacts id");
-
     // get contacts
     const contacts = await listContacts();
-    console.log("contacts with old id");
     console.table(contacts);
 
     // update id in contacts
@@ -145,12 +131,10 @@ const updateContactsId = async () => {
       id: randomUUID(),
     }));
 
-    console.log("contacts with new id");
     console.table(updatedContacts);
 
     // write contacts with new id
     await writeContacts(updatedContacts);
-    console.log("success: update contacts id");
   } catch (error) {
     console.error("error:", error.message);
   }

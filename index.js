@@ -27,8 +27,8 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
     case "add":
       try {
         const newContact = { name, email, phone };
-        await contactServices.addContact(newContact);
-        console.table([contactServices]);
+        const someVar = await contactServices.addContact(newContact);
+        console.table([someVar]);
       } catch (error) {
         console.error("error:", error.message);
       }
